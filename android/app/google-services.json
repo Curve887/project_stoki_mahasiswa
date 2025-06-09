@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "892654961434",
+    "project_id": "stoksi-ade-ta",
+    "storage_bucket": "stoksi-ade-ta.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892654961434:android:7d95c59e89fb0ebc90e2a3",
+        "android_client_info": {
+          "package_name": "com.example.apk_stoksi_ta"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiUrepq_ZIVO8Ip-gmF8m1RjyyO5xmtQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:892654961434:android:09bb6ae2d38925fb90e2a3",
+        "android_client_info": {
+          "package_name": "com.example.stoksi_ta_mahasiswa"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiUrepq_ZIVO8Ip-gmF8m1RjyyO5xmtQk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

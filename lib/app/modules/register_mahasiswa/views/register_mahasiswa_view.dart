@@ -8,52 +8,65 @@ class RegisterMahasiswaView extends GetView<RegisterMahasiswaController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[850],
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('Register Mahasiswa'),
-        backgroundColor: Colors.grey[900],
+        backgroundColor: Colors.black,
         foregroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(25),
         child: Form(
           key: controller.formKey,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildTextField(
-                  controller.emailController,
-                  label: 'Email',
-                  keyboardType: TextInputType.emailAddress,
-                ),
-                _buildTextField(controller.namaController, label: 'Nama'),
-                _buildTextField(
-                  controller.nimController,
-                  label: 'NIM',
-                  keyboardType: TextInputType.number,
-                ),
-                _buildTextField(controller.prodiController, label: 'Prodi'),
-                _buildTextField(
-                  controller.passwordController,
-                  label: 'Password',
-                  obscureText: true,
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: controller.register,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.yellow,
-                    foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    minimumSize: const Size(double.infinity, 50),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Text(
+                'Silahkan Daftar Terlebih Dahulu',
+                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              // Logo Gambar
+              Center(
+                child: Image.asset('assets/image/daftar.png', height: 300),
+              ),
+
+              // Text Fields
+              _buildTextField(
+                controller.emailController,
+                label: 'Email',
+                keyboardType: TextInputType.emailAddress,
+              ),
+              _buildTextField(controller.namaController, label: 'Nama'),
+              _buildTextField(
+                controller.nimController,
+                label: 'NIM',
+                keyboardType: TextInputType.number,
+              ),
+              _buildTextField(controller.prodiController, label: 'Prodi'),
+              _buildTextField(
+                controller.passwordController,
+                label: 'Password',
+                obscureText: true,
+              ),
+
+              const SizedBox(height: 20),
+
+              // Tombol Daftar di Bawah
+              ElevatedButton(
+                onPressed: controller.register,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.black,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10),
                   ),
-                  child: const Text('Daftar'),
+                  minimumSize: const Size(double.infinity, 50),
                 ),
-              ],
-            ),
+                child: const Text('Daftar'),
+              ),
+            ],
           ),
         ),
       ),
@@ -70,14 +83,13 @@ class RegisterMahasiswaView extends GetView<RegisterMahasiswaController> {
       padding: const EdgeInsets.only(bottom: 16),
       child: TextFormField(
         controller: controller,
-        style: const TextStyle(color: Colors.white),
         keyboardType: keyboardType,
         obscureText: obscureText,
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: const TextStyle(color: Colors.white),
+          labelStyle: const TextStyle(color: Colors.black),
           filled: true,
-          fillColor: Colors.grey[700],
+          fillColor: Colors.white,
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
         ),
         validator: (value) =>

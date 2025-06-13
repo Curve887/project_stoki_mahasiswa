@@ -5,14 +5,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LoginMahasiswaController extends GetxController {
   final formKey = GlobalKey<FormState>();
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+  final emailController = TextEditingController(text: 'ade@gmail.com');
+  final passwordController = TextEditingController(text: 'Arcalion1');
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  var isLoading = false.obs;
+
   void login() async {
     if (formKey.currentState!.validate()) {
+      isLoading.value = true;
       try {
         final UserCredential userCredential = await _auth
             .signInWithEmailAndPassword(
@@ -21,11 +24,9 @@ class LoginMahasiswaController extends GetxController {
             );
         final uid = userCredential.user!.uid;
 
-        // Ambil data mahasiswa dari Firestore
         final doc = await _firestore.collection('mahasiswa').doc(uid).get();
         if (doc.exists) {
           final mahasiswaData = doc.data();
-          // Pastikan field status sudah ada saat registrasi, misalnya 'pending' atau 'approved'
           final status = mahasiswaData?['status'] ?? 'pending';
           if (status != 'approved') {
             Get.snackbar(
@@ -34,20 +35,20 @@ class LoginMahasiswaController extends GetxController {
               backgroundColor: Colors.orange,
               colorText: Colors.white,
             );
-            // Logout untuk menghindari state aneh
             await _auth.signOut();
+            isLoading.value = false;
             return;
           }
 
           Get.snackbar("Sukses", "Berhasil login sebagai mahasiswa");
-
-          // Navigasi langsung ke halaman berikutnya tanpa delay
           Get.offAllNamed('/navbar-mahasiswa');
         } else {
           Get.snackbar("Gagal", "Data mahasiswa tidak ditemukan di database");
         }
       } on FirebaseAuthException catch (e) {
         Get.snackbar("Login Gagal", e.message ?? "Terjadi kesalahan");
+      } finally {
+        isLoading.value = false;
       }
     }
   }

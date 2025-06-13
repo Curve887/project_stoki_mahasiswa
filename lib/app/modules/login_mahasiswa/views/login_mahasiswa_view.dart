@@ -42,13 +42,20 @@ class LoginMahasiswaView extends GetView<LoginMahasiswaController> {
                     : 'Minimal 6 karakter',
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: controller.login,
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50),
-                ),
-                child: const Text('Login'),
-              ),
+              Obx(() {
+                return ElevatedButton(
+                  onPressed: controller.isLoading.value
+                      ? null
+                      : controller.login,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50),
+                  ),
+                  child: controller.isLoading.value
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text('Login'),
+                );
+              }),
+
               const SizedBox(height: 16),
               TextButton(
                 onPressed: () {
@@ -61,6 +68,8 @@ class LoginMahasiswaView extends GetView<LoginMahasiswaController> {
                 },
                 child: const Text("Belum punya akun? Daftar di sini"),
               ),
+              const SizedBox(height: 5),
+              TextButton(onPressed: () {}, child: Text('Forgot Password?')),
             ],
           ),
         ),

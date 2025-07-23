@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:intl/date_symbol_data_local.dart'; 
+import 'package:intl/date_symbol_data_local.dart';
 
 class PinjamBarangController extends GetxController {
   final storage = const FlutterSecureStorage();
@@ -22,7 +22,7 @@ class PinjamBarangController extends GetxController {
       if (uid == null) return;
 
       // Inisialisasi lokal Bahasa Indonesia untuk format tanggal
-      await initializeDateFormatting('id_ID', null); 
+      await initializeDateFormatting('id_ID', null);
 
       final snapshot = await firestore
           .collection('minjam')
@@ -80,6 +80,28 @@ class PinjamBarangController extends GetxController {
       dataPeminjaman.value = hasil;
     } catch (e) {
       print('Gagal mengambil data peminjaman: $e');
+    }
+  }
+
+  Future<void> kembalikanBarang(Map<String, dynamic> item) async {
+    try {
+      final uid = await storage.read(key: 'uid');
+      if (uid == null) return;
+
+      await firestore.collection('pengembalian').add({
+        'id_mahasiswa': uid,
+        'nama_barang': item['nama_barang'],
+        'jumlah': item['jumlah'],
+        'nama_admin': item['nama_admin'],
+        'nim': item['nim'],
+        'prodi': item['prodi'],
+        'tanggal_pengembalian': Timestamp.now(),
+      });
+
+      print("Barang berhasil dikembalikan.");
+    } catch (e) {
+      print("Gagal mengembalikan barang: $e");
+      Get.snackbar("Error", "Gagal mengembalikan barang.");
     }
   }
 }

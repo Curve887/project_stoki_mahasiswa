@@ -282,6 +282,8 @@ class HomeMahasiswaView extends GetView<HomeMahasiswaController> {
                                             .set({
                                               'id_minjam': minjamId,
                                               'id_barang': barang['id_barang'],
+                                              'nama_barang':
+                                                  barang['nama_barang'],
                                               'id_mahasiswa':
                                                   mahasiswa['id_mahasiswa'],
                                               'nama': mahasiswa['nama'],

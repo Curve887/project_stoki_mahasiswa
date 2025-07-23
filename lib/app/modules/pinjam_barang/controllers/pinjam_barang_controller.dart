@@ -21,12 +21,15 @@ class PinjamBarangController extends GetxController {
       final uid = await storage.read(key: 'uid');
       if (uid == null) return;
 
-      // Inisialisasi lokal Bahasa Indonesia untuk format tanggal
       await initializeDateFormatting('id_ID', null);
 
       final snapshot = await firestore
           .collection('minjam')
           .where('id_mahasiswa', isEqualTo: uid)
+          .where(
+            'status',
+            whereIn: ['approved', 'pending'],
+          ) // tampilkan dua status
           .get();
 
       List<Map<String, dynamic>> hasil = [];
@@ -34,7 +37,6 @@ class PinjamBarangController extends GetxController {
       for (var doc in snapshot.docs) {
         var data = doc.data();
 
-        // Ambil data admin dan mahasiswa
         var adminRef = await firestore
             .collection('admin')
             .doc(data['id_admin'])
@@ -45,7 +47,6 @@ class PinjamBarangController extends GetxController {
             .doc(data['id_mahasiswa'])
             .get();
 
-        // Konversi tanggal_pinjam
         DateTime? tanggal;
         String tanggalFormat = '-';
 
@@ -66,12 +67,15 @@ class PinjamBarangController extends GetxController {
         }
 
         hasil.add({
+          'doc_id': doc.id,
           'nama_barang': data['nama_barang'] ?? 'Tidak ditemukan',
           'jumlah': data['jumlah'] ?? 0,
           'status': data['status'] ?? '-',
           'nama_admin': adminRef.data()?['nama'] ?? 'Tidak ditemukan',
+          'id_admin': data['id_admin'] ?? '',
           'nim': mahasiswaRef.data()?['nim'] ?? '-',
           'prodi': mahasiswaRef.data()?['prodi'] ?? '-',
+          'nama_mahasiswa': mahasiswaRef.data()?['nama'] ?? 'Tidak ditemukan',
           'tanggal': tanggal,
           'tanggal_format': tanggalFormat,
         });
@@ -88,17 +92,27 @@ class PinjamBarangController extends GetxController {
       final uid = await storage.read(key: 'uid');
       if (uid == null) return;
 
+      // Tambahkan ke koleksi pengembalian
       await firestore.collection('pengembalian').add({
         'id_mahasiswa': uid,
+        'id_admin': item['id_admin'] ?? '',
         'nama_barang': item['nama_barang'],
         'jumlah': item['jumlah'],
         'nama_admin': item['nama_admin'],
         'nim': item['nim'],
         'prodi': item['prodi'],
         'tanggal_pengembalian': Timestamp.now(),
+        'status': 'pending',
       });
 
-      print("Barang berhasil dikembalikan.");
+      // Ubah status di koleksi minjam
+      if (item['doc_id'] != null) {
+        await firestore.collection('minjam').doc(item['doc_id']).update({
+          'status': 'returned',
+        });
+      }
+
+      print("Barang berhasil dikembalikan dan status diupdate.");
     } catch (e) {
       print("Gagal mengembalikan barang: $e");
       Get.snackbar("Error", "Gagal mengembalikan barang.");

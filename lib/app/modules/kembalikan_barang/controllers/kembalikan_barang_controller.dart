@@ -1,23 +1,34 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 
 class KembalikanBarangController extends GetxController {
-  //TODO: Implement KembalikanBarangController
+  final dataPengembalian = [].obs;
+  final _storage = const FlutterSecureStorage();
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
+    ambilDataPengembalian();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  void ambilDataPengembalian() async {
+    try {
+      final uid = await _storage.read(key: 'uid'); // pastikan key-nya 'uid'
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
+      if (uid == null) {
+        Get.snackbar("Error", "User ID tidak ditemukan.");
+        return;
+      }
 
-  void increment() => count.value++;
+      final snapshot = await FirebaseFirestore.instance
+          .collection('pengembalian')
+          .where('id_mahasiswa', isEqualTo: uid)
+          .get();
+
+      dataPengembalian.value = snapshot.docs.map((doc) => doc.data()).toList();
+    } catch (e) {
+      Get.snackbar("Error", "Gagal mengambil data pengembalian: $e");
+    }
+  }
 }

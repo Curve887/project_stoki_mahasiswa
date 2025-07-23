@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -7,6 +8,7 @@ class LoginMahasiswaController extends GetxController {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController(text: 'ade@gmail.com');
   final passwordController = TextEditingController(text: 'Arcalion1');
+  final storage = const FlutterSecureStorage();
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -28,6 +30,7 @@ class LoginMahasiswaController extends GetxController {
         if (doc.exists) {
           final mahasiswaData = doc.data();
           final status = mahasiswaData?['status'] ?? 'pending';
+
           if (status != 'approved') {
             Get.snackbar(
               "Akun Belum Disetujui",
@@ -39,6 +42,14 @@ class LoginMahasiswaController extends GetxController {
             isLoading.value = false;
             return;
           }
+
+          // ✅ Simpan UID dan nama ke secure storage
+          await storage.write(key: 'uid', value: uid);
+          await storage.write(key: 'nama', value: mahasiswaData?['nama'] ?? '');
+          await storage.write(
+            key: 'prodi',
+            value: mahasiswaData?['prodi'] ?? '',
+          );
 
           Get.snackbar("Sukses", "Berhasil login sebagai mahasiswa");
           Get.offAllNamed('/navbar-mahasiswa');

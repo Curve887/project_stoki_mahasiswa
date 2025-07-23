@@ -13,6 +13,7 @@ abstract class Routes {
   static const PINJAM_BARANG = _Paths.PINJAM_BARANG;
   static const KEMBALIKAN_BARANG = _Paths.KEMBALIKAN_BARANG;
   static const PROFIL_MAHASISWA = _Paths.PROFIL_MAHASISWA;
+  static const RESET_PASSWORD = _Paths.RESET_PASSWORD;
 }
 
 abstract class _Paths {
@@ -27,4 +28,5 @@ abstract class _Paths {
   static const PINJAM_BARANG = '/pinjam-barang';
   static const KEMBALIKAN_BARANG = '/kembalikan-barang';
   static const PROFIL_MAHASISWA = '/profil-mahasiswa';
+  static const RESET_PASSWORD = '/reset-password';
 }

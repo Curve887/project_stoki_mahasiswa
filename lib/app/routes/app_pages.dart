@@ -10,13 +10,14 @@ import '../modules/login_mahasiswa/bindings/login_mahasiswa_binding.dart';
 import '../modules/login_mahasiswa/views/login_mahasiswa_view.dart';
 import '../modules/navbar_mahasiswa/bindings/navbar_mahasiswa_binding.dart';
 import '../modules/navbar_mahasiswa/views/navbar_mahasiswa_view.dart';
-
 import '../modules/pinjam_barang/bindings/pinjam_barang_binding.dart';
 import '../modules/pinjam_barang/views/pinjam_barang_view.dart';
 import '../modules/profil_mahasiswa/bindings/profil_mahasiswa_binding.dart';
 import '../modules/profil_mahasiswa/views/profil_mahasiswa_view.dart';
 import '../modules/register_mahasiswa/bindings/register_mahasiswa_binding.dart';
 import '../modules/register_mahasiswa/views/register_mahasiswa_view.dart';
+import '../modules/reset_password/bindings/reset_password_binding.dart';
+import '../modules/reset_password/views/reset_password_view.dart';
 import '../modules/search_barang/bindings/search_barang_binding.dart';
 import '../modules/search_barang/views/search_barang_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
@@ -79,6 +80,11 @@ class AppPages {
       name: _Paths.PROFIL_MAHASISWA,
       page: () => const ProfilMahasiswaView(),
       binding: ProfilMahasiswaBinding(),
+    ),
+    GetPage(
+      name: _Paths.RESET_PASSWORD,
+      page: () => const ResetPasswordView(),
+      binding: ResetPasswordBinding(),
     ),
   ];
 }

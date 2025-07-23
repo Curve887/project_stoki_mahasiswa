@@ -18,30 +18,53 @@ class LoginMahasiswaView extends GetView<LoginMahasiswaController> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextFormField(
-                controller: controller.emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
+              // Gambar Mahasiswa di atas form
+              Image.asset(
+                'assets/image/mahasiswa.png',
+                width: 300,
+                height: 300,
+              ),
+              const SizedBox(height: 24),
+
+              // Email TextField
+              Transform.scale(
+                scale: 0.95,
+                child: TextFormField(
+                  controller: controller.emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  decoration: InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  validator: (value) => value != null && value.contains('@')
+                      ? null
+                      : 'Email tidak valid',
                 ),
-                validator: (value) => value != null && value.contains('@')
-                    ? null
-                    : 'Email tidak valid',
               ),
               const SizedBox(height: 16),
-              TextFormField(
-                controller: controller.passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
+
+              // Password TextField
+              Transform.scale(
+                scale: 0.95,
+                child: TextFormField(
+                  controller: controller.passwordController,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  validator: (value) => value != null && value.length >= 6
+                      ? null
+                      : 'Minimal 6 karakter',
                 ),
-                validator: (value) => value != null && value.length >= 6
-                    ? null
-                    : 'Minimal 6 karakter',
               ),
               const SizedBox(height: 20),
+
+              // Tombol Login
               Obx(() {
                 return ElevatedButton(
                   onPressed: controller.isLoading.value
@@ -49,27 +72,43 @@ class LoginMahasiswaView extends GetView<LoginMahasiswaController> {
                       : controller.login,
                   style: ElevatedButton.styleFrom(
                     minimumSize: const Size.fromHeight(50),
+                    backgroundColor: Colors.black,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                   child: controller.isLoading.value
                       ? const CircularProgressIndicator(color: Colors.white)
-                      : const Text('Login'),
+                      : const Text(
+                          'Login',
+                          style: TextStyle(color: Colors.white),
+                        ),
                 );
               }),
-
               const SizedBox(height: 16),
+
+              // Daftar akun
               TextButton(
                 onPressed: () {
-                  // Lazy put the RegisterMahasiswaController
                   Get.lazyPut<RegisterMahasiswaController>(
                     () => RegisterMahasiswaController(),
                   );
-                  // Navigasi ke halaman register
                   Get.to(() => const RegisterMahasiswaView());
                 },
-                child: const Text("Belum punya akun? Daftar di sini"),
+                child: const Text(
+                  "Belum punya akun? Daftar di sini",
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
-              const SizedBox(height: 5),
-              TextButton(onPressed: () {}, child: Text('Forgot Password?')),
+
+              // Forgot Password
+              TextButton(
+                onPressed: () {},
+                child: const Text(
+                  'Forgot Password?',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
             ],
           ),
         ),

@@ -8,57 +8,68 @@ class SearchBarangView extends GetView<SearchBarangController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[800],
+      backgroundColor: Colors.white, // Latar belakang luar putih
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.grey[800],
-        title: const Text('Produk', style: TextStyle(color: Colors.white)),
+        backgroundColor: Colors.grey[800], // AppBar tetap abu-abu gelap
+        title: const Text(
+          'Produk',
+          style: TextStyle(color: Colors.white), // Warna teks putih
+        ),
         elevation: 0,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: [
-            // Search Bar
+            // 🔍 Search Field
+            // 🔍 Search Field tanpa bayangan
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
+              height: 55,
               decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(10),
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: Colors.grey,
+                ), // outline border di Container
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.search),
-                  const SizedBox(width: 8),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12),
+                    child: Icon(Icons.search, color: Colors.black54),
+                  ),
                   Expanded(
                     child: TextField(
                       onChanged: controller.setSearchQuery,
                       decoration: const InputDecoration(
                         hintText: 'Cari Nama Produk',
-                        border: InputBorder.none,
+                        border: InputBorder.none, // tanpa border tambahan
+                        isDense: true,
+                        contentPadding: EdgeInsets.symmetric(vertical: 14),
                       ),
                     ),
                   ),
                 ],
               ),
             ),
+
             const SizedBox(height: 16),
 
-            // List View
+            // 📦 List Barang
             Expanded(
               child: Obx(() {
                 final items = controller.filteredBarang;
                 return ListView.separated(
                   itemCount: items.length,
-                  separatorBuilder: (_, __) =>
-                      const Divider(color: Colors.white),
+                  separatorBuilder: (_, __) => const SizedBox(height: 10),
                   itemBuilder: (context, index) {
                     final barang = items[index];
                     return Container(
-                      padding: const EdgeInsets.all(12),
-                      margin: const EdgeInsets.symmetric(vertical: 5),
+                      padding: const EdgeInsets.all(15),
                       decoration: BoxDecoration(
-                        color: Colors.grey[700],
+                        color: Colors
+                            .grey[700], // Warna kontainer produk tetap abu-abu gelap
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: Colors.white),
                       ),

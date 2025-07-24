@@ -49,6 +49,7 @@ class PinjamBarangView extends GetView<PinjamBarangController> {
                   Text('NIM: ${item['nim']}'),
                   Text('Nama Mahasiswa: ${item['nama_mahasiswa']}'),
                   Text('Prodi: ${item['prodi']}'),
+                  Text('Lokasi Penyimpanan: ${item['lokasi_penyimpanan']}'),
                   Text('Tanggal: ${item['tanggal_format'] ?? '-'}'),
                   const SizedBox(height: 8),
                   Text(

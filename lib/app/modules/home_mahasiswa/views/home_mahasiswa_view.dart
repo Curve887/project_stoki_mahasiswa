@@ -101,6 +101,7 @@ class HomeMahasiswaView extends GetView<HomeMahasiswaController> {
                         Text('Stok: ${barang['stok'] ?? 0}'),
                         Text('Brand: ${barang['brand'] ?? '-'}'),
                         Text('Kategori: ${barang['kategori'] ?? ''}'),
+                        Text('Lokasi: ${barang['lokasi_penyimpanan'] ?? '-'}'),
                       ],
                     ),
 
@@ -299,6 +300,10 @@ class HomeMahasiswaView extends GetView<HomeMahasiswaController> {
                                                   .trim(),
                                               'id_admin': selectedAdminId,
                                               'admin_nama': adminNama,
+                                              // ✅ tambahkan ini:
+                                              'lokasi_penyimpanan':
+                                                  barang['lokasi_penyimpanan'] ??
+                                                  '-',
                                             });
 
                                         Get.back();

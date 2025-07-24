@@ -80,6 +80,8 @@ class PinjamBarangController extends GetxController {
           'nama_mahasiswa': mahasiswaRef.data()?['nama'] ?? 'Tidak ditemukan',
           'tanggal': tanggal,
           'tanggal_format': tanggalFormat,
+          'lokasi_penyimpanan':
+              data['lokasi_penyimpanan'] ?? '-', 
         });
       }
 

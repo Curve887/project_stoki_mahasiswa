@@ -14,8 +14,7 @@ class KembalikanBarangController extends GetxController {
 
   void ambilDataPengembalian() async {
     try {
-      final uid = await _storage.read(key: 'uid'); // pastikan key-nya 'uid'
-
+      final uid = await _storage.read(key: 'uid');
       if (uid == null) {
         Get.snackbar("Error", "User ID tidak ditemukan.");
         return;
@@ -26,7 +25,36 @@ class KembalikanBarangController extends GetxController {
           .where('id_mahasiswa', isEqualTo: uid)
           .get();
 
-      dataPengembalian.value = snapshot.docs.map((doc) => doc.data()).toList();
+      List<Map<String, dynamic>> hasil = [];
+
+      for (var doc in snapshot.docs) {
+        var data = doc.data();
+
+        // Ambil nama mahasiswa
+        var mahasiswaDoc = await FirebaseFirestore.instance
+            .collection('mahasiswa')
+            .doc(data['id_mahasiswa'])
+            .get();
+        var namaMahasiswa = mahasiswaDoc.data()?['nama'] ?? 'Tidak diketahui';
+
+        // Ambil nama admin
+        String? namaAdmin;
+        if (data['id_admin'] != null) {
+          var adminDoc = await FirebaseFirestore.instance
+              .collection('admin')
+              .doc(data['id_admin'])
+              .get();
+          namaAdmin = adminDoc.data()?['nama'] ?? 'Tidak diketahui';
+        }
+
+        hasil.add({
+          ...data,
+          'nama_mahasiswa': namaMahasiswa,
+          'nama_admin': namaAdmin,
+        });
+      }
+
+      dataPengembalian.value = hasil;
     } catch (e) {
       Get.snackbar("Error", "Gagal mengambil data pengembalian: $e");
     }

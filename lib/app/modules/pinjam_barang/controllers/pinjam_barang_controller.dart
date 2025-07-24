@@ -9,11 +9,13 @@ class PinjamBarangController extends GetxController {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   var dataPeminjaman = [].obs;
+  var daftarAdmin = <Map<String, dynamic>>[].obs;
 
   @override
   void onInit() {
     super.onInit();
     fetchPeminjamanMahasiswa();
+    fetchDaftarAdmin(); // ini ditambahkan
   }
 
   Future<void> fetchPeminjamanMahasiswa() async {
@@ -84,6 +86,17 @@ class PinjamBarangController extends GetxController {
       dataPeminjaman.value = hasil;
     } catch (e) {
       print('Gagal mengambil data peminjaman: $e');
+    }
+  }
+
+  Future<void> fetchDaftarAdmin() async {
+    try {
+      final snapshot = await firestore.collection('admin').get();
+      daftarAdmin.value = snapshot.docs.map((doc) {
+        return {'id': doc.id, 'nama': doc['nama']};
+      }).toList();
+    } catch (e) {
+      print('Gagal mengambil data admin: $e');
     }
   }
 

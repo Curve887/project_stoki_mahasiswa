@@ -61,18 +61,56 @@ class PinjamBarangView extends GetView<PinjamBarangController> {
                       icon: const Icon(Icons.keyboard_return),
                       label: const Text('Kembalikan Barang'),
                       onPressed: () {
+                        String? selectedAdminId;
+                        String? selectedAdminName;
+
                         Get.defaultDialog(
-                          title: "Konfirmasi",
-                          middleText:
-                              "Apakah Anda yakin ingin mengembalikan barang ini?",
-                          textCancel: "Tidak",
+                          title: "Pilih Admin Mengetahui",
+                          content: Obx(() {
+                            if (controller.daftarAdmin.isEmpty) {
+                              return const CircularProgressIndicator();
+                            }
+                            return DropdownButtonFormField<String>(
+                              decoration: const InputDecoration(
+                                labelText: 'Pilih Admin',
+                                border: OutlineInputBorder(),
+                              ),
+                              items: controller.daftarAdmin.map((admin) {
+                                return DropdownMenuItem<String>(
+                                  value: admin['id'],
+                                  child: Text(admin['nama']),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                selectedAdminId = value;
+                                selectedAdminName = controller.daftarAdmin
+                                    .firstWhere(
+                                      (admin) => admin['id'] == value,
+                                    )['nama'];
+                              },
+                            );
+                          }),
+                          textCancel: "Batal",
                           textConfirm: "Ya",
-                          onCancel: () => Get.back(),
                           onConfirm: () async {
-                            Get.back();
-                            await controller.kembalikanBarang(item);
-                            await controller
-                                .fetchPeminjamanMahasiswa(); // ini akan refresh data
+                            if (selectedAdminId == null ||
+                                selectedAdminName == null) {
+                              Get.snackbar(
+                                "Error",
+                                "Silakan pilih admin terlebih dahulu.",
+                              );
+                              return;
+                            }
+                            Get.back(); // tutup dialog
+
+                            // update item dengan admin terpilih
+                            final itemUpdate = Map<String, dynamic>.from(item);
+                            itemUpdate['id_admin'] = selectedAdminId!;
+                            itemUpdate['nama_admin'] = selectedAdminName!;
+
+                            await controller.kembalikanBarang(itemUpdate);
+                            await controller.fetchPeminjamanMahasiswa();
+
                             Get.snackbar(
                               "Berhasil",
                               "Barang telah dikembalikan.",

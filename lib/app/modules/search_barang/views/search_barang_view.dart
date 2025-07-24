@@ -60,42 +60,45 @@ class SearchBarangView extends GetView<SearchBarangController> {
             Expanded(
               child: Obx(() {
                 final items = controller.filteredBarang;
-                return ListView.separated(
-                  itemCount: items.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 10),
-                  itemBuilder: (context, index) {
-                    final barang = items[index];
-                    return Container(
-                      padding: const EdgeInsets.all(15),
-                      decoration: BoxDecoration(
-                        color: Colors
-                            .grey[700], // Warna kontainer produk tetap abu-abu gelap
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.white),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Nama Barang : ${barang.namaBarang}",
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            "Stok : ${barang.stok}",
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            "Brand : ${barang.brand}",
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            "Lokasi : ${barang.lokasiPenyimpanan}",
-                            style: const TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
+                return RefreshIndicator(
+                  onRefresh: controller.fetchBarang,
+                  child: ListView.separated(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    itemCount: items.length,
+                    separatorBuilder: (_, __) => const SizedBox(height: 10),
+                    itemBuilder: (context, index) {
+                      final barang = items[index];
+                      return Container(
+                        padding: const EdgeInsets.all(15),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[700],
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.white),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Nama Barang : ${barang.namaBarang}",
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            Text(
+                              "Stok : ${barang.stok}",
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            Text(
+                              "Brand : ${barang.brand}",
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                            Text(
+                              "Lokasi : ${barang.lokasiPenyimpanan}",
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
                 );
               }),
             ),

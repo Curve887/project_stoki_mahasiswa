@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stoksi_ta_mahasiswa/app/modules/reset_password/controllers/reset_password_controller.dart';
+import 'package:stoksi_ta_mahasiswa/app/modules/reset_password/views/reset_password_view.dart';
 import '../controllers/login_mahasiswa_controller.dart';
 import '../../register_mahasiswa/views/register_mahasiswa_view.dart';
 import '../../register_mahasiswa/controllers/register_mahasiswa_controller.dart';
@@ -103,7 +105,12 @@ class LoginMahasiswaView extends GetView<LoginMahasiswaController> {
 
               // Forgot Password
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.lazyPut<ResetPasswordController>(
+                    () => ResetPasswordController(),
+                  );
+                  Get.to(() => const ResetPasswordView());
+                },
                 child: const Text(
                   'Forgot Password?',
                   style: TextStyle(color: Colors.black),

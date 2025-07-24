@@ -49,6 +49,16 @@ class SearchBarangController extends GetxController {
     searchQuery.value = query;
   }
 
+  // 🔄 Manual fetch (digunakan untuk pull-to-refresh)
+  Future<void> fetchBarang() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('barang')
+        .get();
+    allBarang.value = snapshot.docs
+        .map((doc) => Barang.fromMap(doc.id, doc.data()))
+        .toList();
+  }
+
   void listenToBarangRealtime() {
     FirebaseFirestore.instance.collection('barang').snapshots().listen((
       snapshot,

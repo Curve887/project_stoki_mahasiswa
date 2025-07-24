@@ -52,7 +52,7 @@ class ProfilMahasiswaController extends GetxController {
     Get.dialog(
       Center(
         child: Lottie.asset(
-          'assets/json/loading.json',
+          'assets/json/waveloading.json',
           width: 300,
           height: 300,
           fit: BoxFit.contain,

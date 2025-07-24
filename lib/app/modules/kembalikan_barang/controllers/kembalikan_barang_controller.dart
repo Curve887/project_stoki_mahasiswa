@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 
 class KembalikanBarangController extends GetxController {
   final dataPengembalian = [].obs;
+  final isLoading = true.obs;
   final _storage = const FlutterSecureStorage();
 
   @override
@@ -17,10 +18,12 @@ class KembalikanBarangController extends GetxController {
   }
 
   void ambilDataPengembalian() async {
+    isLoading.value = true;
     try {
       final uid = await _storage.read(key: 'uid');
       if (uid == null) {
         Get.snackbar("Error", "User ID tidak ditemukan.");
+        isLoading.value = false;
         return;
       }
 
@@ -34,14 +37,12 @@ class KembalikanBarangController extends GetxController {
       for (var doc in snapshot.docs) {
         var data = doc.data();
 
-        // Ambil nama mahasiswa
         var mahasiswaDoc = await FirebaseFirestore.instance
             .collection('mahasiswa')
             .doc(data['id_mahasiswa'])
             .get();
         var namaMahasiswa = mahasiswaDoc.data()?['nama'] ?? 'Tidak diketahui';
 
-        // Ambil nama admin
         String? namaAdmin;
         if (data['id_admin'] != null) {
           var adminDoc = await FirebaseFirestore.instance
@@ -51,7 +52,6 @@ class KembalikanBarangController extends GetxController {
           namaAdmin = adminDoc.data()?['nama'] ?? 'Tidak diketahui';
         }
 
-        // Format tanggal dan jam pengembalian
         final timestamp = data['tanggal_pengembalian'] as Timestamp?;
         final tanggalPengembalian = timestamp != null
             ? DateFormat(
@@ -71,6 +71,8 @@ class KembalikanBarangController extends GetxController {
       dataPengembalian.value = hasil;
     } catch (e) {
       Get.snackbar("Error", "Gagal mengambil data pengembalian: $e");
+    } finally {
+      isLoading.value = false;
     }
   }
 }

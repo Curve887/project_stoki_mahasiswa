@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:lottie/lottie.dart';
 
 class Mahasiswa {
   final String? nama;
@@ -47,18 +48,29 @@ class ProfilMahasiswaController extends GetxController {
   }
 
   void logout() async {
-    // Tampilkan loading dialog
+    // Tampilkan animasi loading
     Get.dialog(
-      const Center(child: CircularProgressIndicator()),
+      Center(
+        child: Lottie.asset(
+          'assets/json/loading.json',
+          width: 300,
+          height: 300,
+          fit: BoxFit.contain,
+        ),
+      ),
       barrierDismissible: false,
     );
 
+    // Delay sebentar agar animasi terlihat (bisa kamu sesuaikan)
+    await Future.delayed(const Duration(seconds: 2));
+
     // Proses logout
-    await Future.delayed(const Duration(seconds: 1)); // simulasi delay
     await _storage.delete(key: 'uid_mahasiswa');
 
-    // Tutup loading dan arahkan ke login
-    Get.back(); // tutup dialog loading
+    // Tutup loading
+    Get.back();
+
+    // Arahkan ke halaman login
     Get.offAllNamed('/login-mahasiswa');
   }
 }

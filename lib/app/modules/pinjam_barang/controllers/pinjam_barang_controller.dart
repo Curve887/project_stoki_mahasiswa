@@ -70,6 +70,7 @@ class PinjamBarangController extends GetxController {
 
         hasil.add({
           'doc_id': doc.id,
+          'id_barang': data['id_barang'] ?? '', // Tambahkan ini
           'nama_barang': data['nama_barang'] ?? 'Tidak ditemukan',
           'jumlah': data['jumlah'] ?? 0,
           'status': data['status'] ?? '-',
@@ -80,8 +81,7 @@ class PinjamBarangController extends GetxController {
           'nama_mahasiswa': mahasiswaRef.data()?['nama'] ?? 'Tidak ditemukan',
           'tanggal': tanggal,
           'tanggal_format': tanggalFormat,
-          'lokasi_penyimpanan':
-              data['lokasi_penyimpanan'] ?? '-', 
+          'lokasi_penyimpanan': data['lokasi_penyimpanan'] ?? '-',
         });
       }
 
@@ -111,11 +111,13 @@ class PinjamBarangController extends GetxController {
       await firestore.collection('pengembalian').add({
         'id_mahasiswa': uid,
         'id_admin': item['id_admin'] ?? '',
+        'id_barang': item['id_barang'] ?? '', // Tambahkan ini
         'nama_barang': item['nama_barang'],
         'jumlah': item['jumlah'],
         'nama_admin': item['nama_admin'],
         'nim': item['nim'],
         'prodi': item['prodi'],
+        'nama_mahasiswa': item['nama_mahasiswa'],
         'tanggal_pengembalian': Timestamp.now(),
         'status': 'pending',
       });

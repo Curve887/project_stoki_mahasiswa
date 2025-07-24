@@ -46,9 +46,10 @@ class KembalikanBarangView extends GetView<KembalikanBarangController> {
                     Text('Jumlah: ${item['jumlah']}'),
                     Text('NIM: ${item['nim']}'),
                     Text('Prodi: ${item['prodi']}'),
+                    Text('Admin: ${item['nama_admin'] ?? '-'}'),
                     Text(
-                      'Admin: ${item['nama_admin'] ?? '-'}',
-                    ), // Tambahkan ini
+                      'Tanggal Pengembalian: ${item['tanggal_pengembalian_format'] ?? '-'}',
+                    ), // <-- ditambahkan
                     const SizedBox(height: 8),
                     Text(
                       'Status: ${item['status'] ?? '-'}',

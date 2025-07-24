@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 
 class KembalikanBarangController extends GetxController {
   final dataPengembalian = [].obs;
@@ -9,7 +11,9 @@ class KembalikanBarangController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    ambilDataPengembalian();
+    initializeDateFormatting('id_ID', null).then((_) {
+      ambilDataPengembalian();
+    });
   }
 
   void ambilDataPengembalian() async {
@@ -47,10 +51,20 @@ class KembalikanBarangController extends GetxController {
           namaAdmin = adminDoc.data()?['nama'] ?? 'Tidak diketahui';
         }
 
+        // Format tanggal dan jam pengembalian
+        final timestamp = data['tanggal_pengembalian'] as Timestamp?;
+        final tanggalPengembalian = timestamp != null
+            ? DateFormat(
+                'd MMMM yyyy • HH:mm',
+                'id_ID',
+              ).format(timestamp.toDate())
+            : 'Tidak diketahui';
+
         hasil.add({
           ...data,
           'nama_mahasiswa': namaMahasiswa,
           'nama_admin': namaAdmin,
+          'tanggal_pengembalian_format': tanggalPengembalian,
         });
       }
 

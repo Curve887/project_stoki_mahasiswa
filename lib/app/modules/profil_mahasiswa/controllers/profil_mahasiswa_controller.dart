@@ -73,4 +73,5 @@ class ProfilMahasiswaController extends GetxController {
     // Arahkan ke halaman login
     Get.offAllNamed('/login-mahasiswa');
   }
+  
 }

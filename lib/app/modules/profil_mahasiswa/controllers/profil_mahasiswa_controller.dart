@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -46,8 +47,18 @@ class ProfilMahasiswaController extends GetxController {
   }
 
   void logout() async {
+    // Tampilkan loading dialog
+    Get.dialog(
+      const Center(child: CircularProgressIndicator()),
+      barrierDismissible: false,
+    );
+
+    // Proses logout
+    await Future.delayed(const Duration(seconds: 1)); // simulasi delay
     await _storage.delete(key: 'uid_mahasiswa');
-    Get.back(); // tutup dialog
+
+    // Tutup loading dan arahkan ke login
+    Get.back(); // tutup dialog loading
     Get.offAllNamed('/login-mahasiswa');
   }
 }

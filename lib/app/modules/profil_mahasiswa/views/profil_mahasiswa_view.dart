@@ -90,7 +90,10 @@ class ProfilMahasiswaView extends GetView<ProfilMahasiswaController> {
       textCancel: "Tidak",
       textConfirm: "Ya",
       confirmTextColor: Colors.white,
-      onConfirm: controller.logout,
+      onConfirm: () {
+        Get.back(); // tutup dialog konfirmasi dulu
+        controller.logout(); // lalu jalankan logout + loading
+      },
     );
   }
 }
